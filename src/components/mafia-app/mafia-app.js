@@ -1,6 +1,7 @@
 import { LitElement, html, css, customElement, property, query } from 'lit-element';
 
 import MafiaBackground from '../mafia-background/mafia-background';
+import MafiaGenerator from '../pages/mafia-generator/mafia-generator';
 
 @customElement('mafia-app')
 export default class MafiaApp extends LitElement {
@@ -29,14 +30,7 @@ export default class MafiaApp extends LitElement {
     return html`
     <mafia-background></mafia-background>
     <div class="root">
-      <h1><i>Mafia</i> Coming Soon</h1>
-      <button ?disabled=${this.buttonDisabled} @click=${() => {
-        this.background.advanceVideo();
-        this.buttonDisabled = true;
-        setTimeout(() => {
-          this.buttonDisabled = false;
-        }, 2000);
-      }}>Advance Time</button>
+      <mafia-generator></mafia-generator>
     </div>`;
   }
 

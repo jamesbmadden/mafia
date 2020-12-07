@@ -62,7 +62,7 @@ export default class MafiaApp extends LitElement {
   render () {
     return html`
       <div class="root">
-        <video muted src="${this.video}"></video>
+        <video muted src="${this.video}" oncanplay="this.muted=true"></video>
       </div>`;
   }
 

@@ -187,7 +187,7 @@ export default class MafiaGenerator extends LitElement {
     
     const generated = players.map((player, index) => {
       // pick a random number between 0 and the total number of items left in the roles
-      return [player.name, roles.splice(Math.floor(Math.random() * (roles.length - index)), 1)];
+      return [player.name, roles.splice(Math.floor(Math.random() * (roles.length - index)), 1)].flat();
     });
 
     console.log(generated);
@@ -196,7 +196,7 @@ export default class MafiaGenerator extends LitElement {
 
   render () {
     return html`
-      <h1><i>Mafia</i> Generator</h1>
+      <h1><i>Mafia</i> Generator <span style="font-size: 1rem">Beta</span></h1>
       <div class="split-box">
         <div class="players">
           <h3>Players</h3>

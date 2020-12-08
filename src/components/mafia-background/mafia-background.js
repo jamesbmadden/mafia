@@ -1,5 +1,7 @@
 import { LitElement, html, css, customElement, property, query } from 'lit-element';
 
+import VideoPoster from '../../assets/background_preview.jpg';
+
 @customElement('mafia-background')
 export default class MafiaApp extends LitElement {
 
@@ -62,7 +64,7 @@ export default class MafiaApp extends LitElement {
   render () {
     return html`
       <div class="root">
-        <video muted src="${this.video}" oncanplay="this.muted=true"></video>
+        <video muted src="${this.video}" poster=${VideoPoster} oncanplay="this.muted=true"></video>
       </div>`;
   }
 

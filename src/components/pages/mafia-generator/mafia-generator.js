@@ -1,5 +1,6 @@
 import { LitElement, html, css, customElement, property, query } from 'lit-element';
 import { repeat } from 'lit-html/directives/repeat';
+import 'array-flat-polyfill';
 
 @customElement('mafia-generator')
 export default class MafiaGenerator extends LitElement {
@@ -81,6 +82,7 @@ export default class MafiaGenerator extends LitElement {
         border-radius: 8px;
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+        outline: none;
       }
       .role-row .text-input {
         width: calc(100% - 106px);
@@ -103,6 +105,7 @@ export default class MafiaGenerator extends LitElement {
         border-radius: 8px;
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+        outline: none;
       }
 
       .list-button {
@@ -172,6 +175,25 @@ export default class MafiaGenerator extends LitElement {
     return count;
   }
 
+  generateRoles () {
+    let players = this.players;
+    let roles = this.roles.map(role => {
+      let expandedRole = [];
+      for (let i = 0; i < role.count; i++) {
+        expandedRole.push(role.name);
+      }
+      return expandedRole;
+    }).flat();
+    
+    const generated = players.map((player, index) => {
+      // pick a random number between 0 and the total number of items left in the roles
+      return [player.name, roles.splice(Math.floor(Math.random() * (roles.length - index)), 1)];
+    });
+
+    console.log(generated);
+    this.dispatchEvent(new CustomEvent('generated', { detail: generated }));
+  }
+
   render () {
     return html`
       <h1><i>Mafia</i> Generator</h1>
@@ -181,7 +203,9 @@ export default class MafiaGenerator extends LitElement {
           ${repeat(this.players, player => player.id, (player, index) => {
             return html`
               <div class="list-row name-row">
-                <input class="text-input name-input" type="text" placeholder="Name" value=${player.name}>
+                <input class="text-input name-input" type="text" placeholder="Name" value=${player.name} @input=${event => {
+                  this.players[index].name = event.target.value;
+                }}>
                 <button class="list-button" @click=${() => {
                   this.players.splice(index, 1);
                   this.splitBox.querySelectorAll('.name-row')[index].style.animation = 'listRowExit 0.4s forwards';
@@ -203,8 +227,13 @@ export default class MafiaGenerator extends LitElement {
           ${repeat(this.roles, role => role.id, (role, index) => {
             return html`
               <div class="list-row role-row">
-                <input class="text-input role-input role-input-name" type="text" placeholder="Role" value=${role.name}>
-                <input class="number-input role-input role-input-count" type="number" value=${role.count}>
+                <input class="text-input role-input role-input-name" type="text" placeholder="Role" value=${role.name} @input=${event => {
+                  this.roles[index].name = event.target.value;
+                }}>
+                <input class="number-input role-input role-input-count" type="number" value=${role.count} @input=${event => {
+                  this.roles[index].count = Number(event.target.value);
+                  this.reload++;
+                }}>
                 <button class="list-button" @click=${() => {
                   this.roles.splice(index, 1);
                   this.reload++;
@@ -219,7 +248,7 @@ export default class MafiaGenerator extends LitElement {
           }}>+</button>
         </div>
       </div>
-      <button class="generate-button" ?disabled=${this.players.length !== this.roleCount()}>Generate!</button>
+      <button class="generate-button" ?disabled=${this.players.length !== this.roleCount()} @click=${() => this.generateRoles()}>Generate!</button>
       <p class="error ${this.players.length === this.roleCount() ? '' : 'visible'}">Cannot generate unless there's an even number of players and roles.</p>`;
   }
 

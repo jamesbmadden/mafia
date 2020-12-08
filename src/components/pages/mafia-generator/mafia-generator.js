@@ -6,12 +6,12 @@ export default class MafiaGenerator extends LitElement {
 
   @query('.split-box') splitBox;
 
-  @property({type: Array}) players = [{name: "James", id: 0}];
-  @property({type: Array}) roles = [{name: "Mafia", count: 1, id: 0}, {name: "Villager", count: 4, id: 1}, {name: "Detective", count: 1, id: 2}];
+  @property({type: Array}) players = [{name: "John", id: 0}, {name: "David", id: 1}, {name: "Peter", id: 2}, {name: "Mary", id: 3}, {name: "Ashley", id: 4}];
+  @property({type: Array}) roles = [{name: "Mafia", count: 1, id: 0}, {name: "Villager", count: 2, id: 1}, {name: "Detective", count: 1, id: 2}, {name: "Doctor", count: 1, id: 3}];
   @property({type: Number}) reload = 0;
 
-  uniquePlayerIndex = 1;
-  uniqueRolesIndex = 3;
+  uniquePlayerIndex = 5;
+  uniqueRolesIndex = 4;
   
   static get styles () {
     return css`
@@ -125,7 +125,51 @@ export default class MafiaGenerator extends LitElement {
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         transform: translateY(-1px);
       }
+
+      .generate-button {
+        box-sizing: border-box;
+        flex-grow: 0;
+        flex-shrink: 0;
+        height: 32px;
+        margin-left: 8px;
+        background: rgba(255, 255, 255, 0.25);
+        border: 0;
+        border-radius: 8px;
+        font-size: 1.05rem;
+        cursor: pointer;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+      }
+      .generate-button:hover {
+        background: rgba(255, 255, 255, 0.33);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        transform: translateY(-1px);
+      }
+      .generate-button:disabled {
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: initial;
+        color: #333;
+      }
+
+      .error {
+        opacity: 0;
+        font-style: italic;
+        transition: opacity 0.4s;
+      }
+      .error.visible {
+        opacity: 1;
+      }
     `;
+  }
+
+  roleCount () {
+    let count = 0;
+
+    this.roles.forEach(role => {
+      count += role.count;
+    });
+
+    return count;
   }
 
   render () {
@@ -175,7 +219,8 @@ export default class MafiaGenerator extends LitElement {
           }}>+</button>
         </div>
       </div>
-      <button>Generate!</button>`;
+      <button class="generate-button" ?disabled=${this.players.length !== this.roleCount()}>Generate!</button>
+      <p class="error ${this.players.length === this.roleCount() ? '' : 'visible'}">Cannot generate unless there's an even number of players and roles.</p>`;
   }
 
 }

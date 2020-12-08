@@ -3,8 +3,6 @@ import { LitElement, html, css, customElement, property, query } from 'lit-eleme
 import MafiaBackground from '../mafia-background/mafia-background';
 import MafiaGenerator from '../pages/mafia-generator/mafia-generator';
 
-import VideoPoster from '../../assets/background_preview.jpg';
-
 @customElement('mafia-app')
 export default class MafiaApp extends LitElement {
 
@@ -54,13 +52,6 @@ export default class MafiaApp extends LitElement {
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         transform: translate(-50%, -50%);
       }
-
-      .dialogue-background {
-        position: absolute;
-        top: 0; left: 0;
-        height: 100%; width: 100%;
-        filter: blur(4px);
-      }
     `;
   }
 
@@ -69,7 +60,7 @@ export default class MafiaApp extends LitElement {
     console.log(roles);
     this.generatedRoles = roles;
     this.reload++;
-    this.background.style.filter = 'blur(4px)';
+    this.background.blur = true;
     this.generator.style.filter = 'blur(4px)';
   }
 
@@ -94,7 +85,6 @@ export default class MafiaApp extends LitElement {
       <mafia-generator></mafia-generator>
     </div>
     <div class="dialogue ${this.reload !== 0 ? 'visible' : ''}">
-      <img src=${VideoPoster} class="dialogue-background" />
       <div class="dialogue-front">
         ${this.generatedRoles.map(role => {
           return html`<p>${role[0]}: ${role[1]}</p>`;

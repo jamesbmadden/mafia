@@ -17,7 +17,14 @@ module.exports = {
   module: {
     rules: [
       { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
-      { test: /\.(mp4|jpe?g)$/i, exclude: /node_modules/, loader: "file-loader" },
+      { test: /\.(mp4|jpe?g)$/i, exclude: /node_modules/, use: [
+        {
+          loader: 'url-loader',
+          options: {
+            limit: 17000,
+          }
+        }
+      ]},
     ]
   }  
 };

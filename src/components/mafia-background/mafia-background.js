@@ -7,6 +7,7 @@ export default class MafiaApp extends LitElement {
 
   @property() video;
   @query('video') videoElement;
+  @property({type: Boolean}) blur = false; 
   
   static get styles () {
     return css`
@@ -23,6 +24,9 @@ export default class MafiaApp extends LitElement {
         bottom: 0;
         left: 0;
         height: 100%;
+      }
+      .blurred {
+        filter: blur(4px);
       }
     `;
   }
@@ -64,7 +68,7 @@ export default class MafiaApp extends LitElement {
   render () {
     return html`
       <div class="root">
-        <video muted src="${this.video}" poster=${VideoPoster} oncanplay="this.muted=true"></video>
+        <video muted src="${this.video}" poster=${VideoPoster} oncanplay="this.muted=true" class=${this.blur ? 'blurred' : ''}></video>
       </div>`;
   }
 

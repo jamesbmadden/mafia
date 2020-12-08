@@ -36,6 +36,8 @@ export default class MafiaGenerator extends LitElement {
         width: 100%;
         max-width: 288px;
         padding: 1rem;
+        max-height: calc(100vh - 256px);
+        overflow-y: auto;
       }
 
       h3 {
@@ -65,16 +67,23 @@ export default class MafiaGenerator extends LitElement {
         transform: translate(0);
         margin-bottom: 0px;
         animation: listRowEnter 0.4s;
+        width: 100%;
+        max-width: 288px;
       }
       .list-row .text-input {
         flex-grow: 1;
+        flex-shrink: 1;
         padding: 8px;
-        width: 100%;
+        width: calc(100% - 40px);
+        max-width: 248px;
         background: rgba(255, 255, 255, 0.5);
         border: 0;
         border-radius: 8px;
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+      }
+      .role-row .text-input {
+        width: calc(100% - 106px);
       }
       .list-row .text-input:hover {
         background: rgba(255, 255, 255, 0.66);

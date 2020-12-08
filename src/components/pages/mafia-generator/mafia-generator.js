@@ -236,7 +236,10 @@ export default class MafiaGenerator extends LitElement {
                 }}>
                 <button class="list-button" @click=${() => {
                   this.roles.splice(index, 1);
-                  this.reload++;
+                  this.splitBox.querySelectorAll('.role-row')[index].style.animation = 'listRowExit 0.4s forwards';
+                  setTimeout(() => {
+                    this.reload++;
+                  }, 400);
                 }}>-</button>
               </div>
             `;
